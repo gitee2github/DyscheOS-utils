@@ -1,36 +1,34 @@
 # DyscheOS-utils
 
 #### Description
-It provides utility tools for DyscheOS, including management tools, scripts, user-guide and kernel modules.
+This repo is about misc tools regard to userspace part of the Dysche solution.
+
+Note, the master branch may not contain latest dev process. See the list of branches
+for more details.
 
 #### Software Architecture
-Software architecture description
+The overall architecture of Dysche is originated from Linux AMP(Asychronous Multi-Processing) architecture.
+In general, there are two parts in Dysche arch: Linux kernel part and the Linux userspace part. In this
+repo, we'll focus on userspace part.
 
-#### Installation
+For Dysche userspace design, there are several componets logically:
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+- A tool to handle APP-OS images, load the image and verify the image etc.
+
+- Interface with the Dysche kernel part, run the APP-OS.
+
+- A system service to interfere with Dysche kernel part, maintain/operate APP-OS on the fly, provide
+devices emulation etc.
 
 #### Instructions
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+Refer to README.md file of each submodule/tool in this repo please.
 
 #### Contribution
 
 1.  Fork the repository
-2.  Create Feat_xxx branch
-3.  Commit your code
+2.  Create a branch
+3.  Commit your changes
 4.  Create Pull Request
 
 
-#### Gitee Feature
-
-1.  You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2.  Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3.  Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4.  The most valuable open source project [GVP](https://gitee.com/gvp)
-5.  The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6.  The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
