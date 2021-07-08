@@ -1,37 +1,31 @@
 # DyscheOS-utils
 
 #### 介绍
-It provides utility tools for DyscheOS, including management tools, scripts, user-guide and kernel modules.
+本仓库是 Dysche 解决方案用户态工具的仓库。Master 分支可能不会包含最新最全的工具
+集， 可查看分支列表获取更全面的及时信息。
 
 #### 软件架构
-软件架构说明
+Dysche 的整体架构来源于 Linux AMP 架构，大体上分为两个部分。一个是 Linux 内核
+部分，另一个是用户态部分。本仓库专注于用户态部分。
+
+用户态工具逻辑上分为如下几个部分：
+
+- 对 APP-OS 镜像的加载与校验
+
+- 与 Dysche 内核部分提供的接口进行交互，将 APP-OS 启动起来
+
+- 常驻 Linux 的系统服务，通过与 Dysche 内核模块交互，提供在线功能扩展，如设备
+模拟，维护，用户管理操作等。
 
 
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+详细用法请参见每一个子工具的 README 文件。
 
 #### 参与贡献
 
 1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
+2.  新建分支
 3.  提交代码
 4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
