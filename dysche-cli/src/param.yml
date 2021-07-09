@@ -1,0 +1,23 @@
+name: "dysche-cli"
+version: "0.1.0"
+about: "Cli tools for dysche partition management"
+author: "Guangxing Deng. <dengguangxing@huawei.com>, Liang Li <liliang6@me.com>"
+
+args:
+  - verbose:
+      help: "show verbose help infos"
+      short: v
+      multiple: false
+
+subcommands:
+  - create:
+      about: "create a app partition"
+      short: c
+      multiple: false
+
+  - list:
+      about: "show available partitions"
+      args:
+        - verbose:
+            help: "show partition info verbosely"
+            short: v
