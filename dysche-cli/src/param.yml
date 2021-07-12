@@ -11,9 +11,22 @@ args:
 
 subcommands:
   - create:
-      about: "create a app partition"
+      about: "create an app partition"
       short: c
       multiple: false
+      args:
+        - cpu:
+            help: "core (lists) for the newly created partition"
+            takes_value: true
+            short: c
+        - kernel:
+            help: "the kernel image for the newly created partition"
+            takes_value: true
+            short: k
+        - bootargs:
+            help: "the kernel boot cmdline params for the newly created partition"
+            takes_value: true
+            short: b
 
   - list:
       about: "show available partitions"
