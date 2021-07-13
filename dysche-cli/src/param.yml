@@ -28,6 +28,15 @@ subcommands:
             takes_value: true
             short: b
 
+  - destroy:
+      about: "destroy an app partition"
+      short: d
+      multiple: false
+      args:
+        - pid:
+            help: "specify partition id that will be destoried."
+            takes_value: true
+            short: p
   - list:
       about: "show available partitions"
       args:

@@ -1,9 +1,10 @@
 extern crate clap;
 use std::fs::File;
 use std::io::{self, BufRead};
-use std::path::Path;
+use std::io::Write;
+use std::fs::OpenOptions;
 
-const _DYSCHE_OP : &str = "/sys/modules/dysche/op";
+const DYSCHE_OP  : &str = "/sys/modules/dysche/op";
 const DYSCHE_STS : &str = "/sys/modules/dysche/status";
 
 fn main() {
@@ -38,6 +39,9 @@ fn main() {
                      cpus);
             ret = create_partition(cpus, kernel, "console=ttyS0, 115200", "acpi_devs: ");
         }
+    } else if let Some(sc) = matches.subcommand_matches("destroy") {
+        let pid = sc.value_of("pid").unwrap_or("-1");
+        ret = destroy_partition(pid);
     }
 
     if ret > 0 {
@@ -67,9 +71,53 @@ fn create_partition(cpus: &str, kernel_img: &str, kernel_param: &str, dev_list: 
     return ret;
 }
 
+fn destroy_partition(pid: &str) -> i32 {
+    let mut _ret = 0;
 
-fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
-    where P: AsRef<Path>, {
-    let file = File::open(filename)?;
+    println!("Will force destroy partition {}", pid);
+
+    let cmd = format!("destory {}", pid);
+    _ret = write_line(DYSCHE_OP, &cmd);
+
+    if _ret == 0 {
+        println!("partition {} is destoried.", pid);
+    } else {
+        println!("{} is not present.", DYSCHE_OP);
+        println!("  check if the kernel module is enabled or not.");
+        println!();
+        _ret = 1;
+    }
+
+    return _ret;
+}
+
+fn write_line(filename: &str, line: &str) -> i32 {
+    let mut ret = 0;
+
+    let mut file = OpenOptions::new()
+        .write(true)
+        .append(true)
+        .open(filename)
+        .unwrap();
+
+    match file.write_all(line.as_bytes()) {
+        Err(_e) => {
+            println!("Write error");
+            ret = -1;
+        }
+        Ok(_) => {
+            println!("Write success");
+            //file.sync_all();
+        }
+    }
+
+    return ret;
+}
+
+fn read_lines(filename: &str) -> io::Result<io::Lines<io::BufReader<File>>> {
+    let file = match File::open(filename) {
+        Err(why) => panic!("couldn't open {}: {}", &filename, why),
+        Ok(file) => file,
+    };
     Ok(io::BufReader::new(file).lines())
 }
