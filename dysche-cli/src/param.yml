@@ -37,6 +37,25 @@ subcommands:
             help: "specify partition id that will be destoried."
             takes_value: true
             short: p
+
+  - migrate:
+      about: "migrate an app partition"
+      short: m
+      multiple: true
+      args:
+        - cpu:
+            help: "specify core(list) that will be migrated"
+            takes_value: true
+            short: c
+        - source_partition:
+            help: "specify the source partition that resource migrated out"
+            takes_value: true
+            short: s
+        - dest_partition:
+            help: "specify the dest partition that resource migrated in"
+            takes_value: true
+            short: d
+
   - list:
       about: "show available partitions"
       args:
