@@ -62,3 +62,12 @@ subcommands:
         - verbose:
             help: "show partition info verbosely"
             short: v
+
+  - show:
+      about: "show details of a partition"
+      multiple: false
+      args:
+        - pid:
+            help: "specify partition id that details need be shown."
+            takes_value: true
+            short: p

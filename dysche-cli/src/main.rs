@@ -45,6 +45,9 @@ fn main() {
     } else if let Some(sc) = matches.subcommand_matches("destroy") {
         let pid = sc.value_of("pid").unwrap_or("-1");
         ret = destroy_partition(pid);
+    } else if let Some(sc) = matches.subcommand_matches("show") {
+        let pid = sc.value_of("pid").unwrap_or("-1");
+        ret = show_partition(pid);
     }  else if let Some(sc) = matches.subcommand_matches("migrate") {
         println!("migrate resources between partitions:");
 
@@ -134,6 +137,13 @@ fn destroy_partition(pid: &str) -> i32 {
     }
 
     return _ret;
+}
+
+fn show_partition(pid: &str) -> i32 {
+    println!("The details of the partition {}", pid);
+    println!("place holder. need impl later.");
+
+    return 0;
 }
 
 fn migrate_partition(_sp: &str, _dp: &str, _cpus: &str) -> i32 {
