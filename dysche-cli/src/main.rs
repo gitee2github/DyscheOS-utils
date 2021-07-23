@@ -4,13 +4,20 @@ use std::io::{self, BufRead};
 use std::io::Write;
 use std::fs::OpenOptions;
 
-const DYSCHE_OP  : &str = "/sys/modules/dysche/op";
-const DYSCHE_STS : &str = "/sys/modules/dysche/status";
+static DYSCHE_OP  : &str = "/sys/modules/dysche/op";
+static DYSCHE_STS : &str = "/sys/modules/dysche/status";
+
+enum DyscheErrorCode {
+    DEOK,
+    DENOCPU,
+    DENOKERNEL,
+    DENOSPDP,
+}
 
 fn main() {
     let yml = clap::load_yaml!("param.yml");
     let matches = clap::App::from_yaml(yml).get_matches();
-    let mut ret : Result<i32, i32> = Ok(0);
+    let mut ret : Result<i32, DyscheErrorCode> = Ok(0);
 
     if let Some(_sc) = matches.subcommand_matches("list") {
         let mut verb = false;
@@ -28,12 +35,12 @@ fn main() {
         let kernel = sc.value_of("kernel").unwrap_or("");
 
         if cpus == "" {
-            ret = Err(1);
+            ret = Err(DyscheErrorCode::DENOCPU);
             println!("Core (lists) is needed.");
         }
 
         if kernel == "" {
-            ret = Err(2);
+            ret = Err(DyscheErrorCode::DENOKERNEL);
             println!("kernel for the newly created partition is needed.");
         }
 
@@ -59,12 +66,12 @@ fn main() {
         let dp = sc.value_of("dest_partition").unwrap_or("");
 
         if cpus == "" {
-            ret = Err(3);
+            ret = Err(DyscheErrorCode::DENOCPU);
             println!("Core (lists) is needed.");
         }
 
         if sp == "" || dp == "" {
-            ret = Err(4);
+            ret = Err(DyscheErrorCode::DENOSPDP);
             println!("source & dest partitions need be specified.");
         }
 
@@ -81,9 +88,7 @@ fn main() {
     match ret {
         Ok(_) => println!("success."),
         Err(e) => {
-            println!("errcode {}", e);
             match e {
-                1 => {},
                 _ => {},
             }
             let _ = clap::App::from_yaml(yml).print_long_help();
@@ -112,7 +117,7 @@ fn list_partitions(_verbose: bool) -> i32 {
     return ret;
 }
 
-fn create_partition(cpus: &str, kernel_img: &str, kernel_param: &str, dev_list: &str) -> Result<i32, i32> {
+fn create_partition(cpus: &str, kernel_img: &str, kernel_param: &str, dev_list: &str) -> Result<i32, DyscheErrorCode> {
     let mut ret = 0;
     println!("Info: cpu: {}, kernel: {}, kernel_param: {}, dev_list: {}",
              cpus, kernel_img, kernel_param, dev_list);
@@ -132,11 +137,11 @@ fn create_partition(cpus: &str, kernel_img: &str, kernel_param: &str, dev_list: 
 
     match ret {
         0 => Ok(ret),
-        _ => Err(ret),
+        _ => Err(DyscheErrorCode::DEOK),
     }
 }
 
-fn destroy_partition(pid: &str) -> Result<i32, i32> {
+fn destroy_partition(pid: &str) -> Result<i32, DyscheErrorCode> {
     let mut _ret = 0;
 
     println!("Will force destroy partition {}", pid);
@@ -156,14 +161,14 @@ fn destroy_partition(pid: &str) -> Result<i32, i32> {
     return Ok(_ret);
 }
 
-fn show_partition(pid: &str) -> Result<i32, i32> {
+fn show_partition(pid: &str) -> Result<i32, DyscheErrorCode> {
     println!("The details of the partition {}", pid);
     println!("place holder. need impl later.");
 
     return Ok(0);
 }
 
-fn migrate_partition(_sp: &str, _dp: &str, _cpus: &str) -> Result<i32, i32> {
+fn migrate_partition(_sp: &str, _dp: &str, _cpus: &str) -> Result<i32, DyscheErrorCode> {
     println!("place holder. need impl later.");
 
     return Ok(0);
