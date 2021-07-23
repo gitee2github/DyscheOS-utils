@@ -10,7 +10,7 @@ const DYSCHE_STS : &str = "/sys/modules/dysche/status";
 fn main() {
     let yml = clap::load_yaml!("param.yml");
     let matches = clap::App::from_yaml(yml).get_matches();
-    let mut ret = 0;
+    let mut ret : Result<i32, i32> = Ok(0);
 
     if let Some(_sc) = matches.subcommand_matches("list") {
         let mut verb = false;
@@ -28,19 +28,22 @@ fn main() {
         let kernel = sc.value_of("kernel").unwrap_or("");
 
         if cpus == "" {
-            ret = 1;
+            ret = Err(1);
             println!("Core (lists) is needed.");
         }
 
         if kernel == "" {
-            ret = 1;
+            ret = Err(2);
             println!("kernel for the newly created partition is needed.");
         }
 
-        if ret <= 0 {
-            println!("  creating a new partition, running {} on cores {}", kernel,
+        match ret {
+            Ok(_) => {
+                println!("  creating a new partition, running {} on cores {}", kernel,
                      cpus);
-            ret = create_partition(cpus, kernel, "console=ttyS0, 115200", "acpi_devs: ");
+                let _ret = create_partition(cpus, kernel, "console=ttyS0, 115200", "acpi_devs: ");
+            },
+            Err(_) => {},
         }
     } else if let Some(sc) = matches.subcommand_matches("destroy") {
         let pid = sc.value_of("pid").unwrap_or("-1");
@@ -56,24 +59,35 @@ fn main() {
         let dp = sc.value_of("dest_partition").unwrap_or("");
 
         if cpus == "" {
-            ret = 1;
+            ret = Err(3);
             println!("Core (lists) is needed.");
         }
 
         if sp == "" || dp == "" {
-            ret = 1;
+            ret = Err(4);
             println!("source & dest partitions need be specified.");
         }
 
-        if ret <= 0 {
-            println!("  migrate cpu {} from partition {} to partition {}", cpus,
+        match ret {
+            Ok(_) => {
+                println!("  migrate cpu {} from partition {} to partition {}", cpus,
                      sp, dp);
-            ret = migrate_partition(sp, dp, cpus);
+                ret = migrate_partition(sp, dp, cpus);
+            },
+            Err(_) => {},
         }
     }
 
-    if ret > 0 {
-        let _ = clap::App::from_yaml(yml).print_long_help();
+    match ret {
+        Ok(_) => println!("success."),
+        Err(e) => {
+            println!("errcode {}", e);
+            match e {
+                1 => {},
+                _ => {},
+            }
+            let _ = clap::App::from_yaml(yml).print_long_help();
+        },
     }
 
 }
@@ -98,7 +112,7 @@ fn list_partitions(_verbose: bool) -> i32 {
     return ret;
 }
 
-fn create_partition(cpus: &str, kernel_img: &str, kernel_param: &str, dev_list: &str) -> i32 {
+fn create_partition(cpus: &str, kernel_img: &str, kernel_param: &str, dev_list: &str) -> Result<i32, i32> {
     let mut ret = 0;
     println!("Info: cpu: {}, kernel: {}, kernel_param: {}, dev_list: {}",
              cpus, kernel_img, kernel_param, dev_list);
@@ -116,10 +130,13 @@ fn create_partition(cpus: &str, kernel_img: &str, kernel_param: &str, dev_list: 
         ret = 1;
     }
 
-    return ret;
+    match ret {
+        0 => Ok(ret),
+        _ => Err(ret),
+    }
 }
 
-fn destroy_partition(pid: &str) -> i32 {
+fn destroy_partition(pid: &str) -> Result<i32, i32> {
     let mut _ret = 0;
 
     println!("Will force destroy partition {}", pid);
@@ -136,20 +153,20 @@ fn destroy_partition(pid: &str) -> i32 {
         _ret = 1;
     }
 
-    return _ret;
+    return Ok(_ret);
 }
 
-fn show_partition(pid: &str) -> i32 {
+fn show_partition(pid: &str) -> Result<i32, i32> {
     println!("The details of the partition {}", pid);
     println!("place holder. need impl later.");
 
-    return 0;
+    return Ok(0);
 }
 
-fn migrate_partition(_sp: &str, _dp: &str, _cpus: &str) -> i32 {
+fn migrate_partition(_sp: &str, _dp: &str, _cpus: &str) -> Result<i32, i32> {
     println!("place holder. need impl later.");
 
-    return 0;
+    return Ok(0);
 }
 
 fn write_line(filename: &str, line: &str) -> i32 {
