@@ -20,7 +20,7 @@ Dysche 的整体架构来源于 Linux AMP 架构，大体上分为两个部分�
 
 #### 使用说明
 
-详细用法请参见每一个子工具的 README 文件。
+详情请参见每一个子目录中的 README 文件。
 
 #### 参与贡献
 
@@ -30,6 +30,5 @@ Dysche 的整体架构来源于 Linux AMP 架构，大体上分为两个部分�
 4.  新建 Pull Request
 
 #### 致谢
-
 
 Thanks.
