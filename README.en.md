@@ -22,7 +22,7 @@ devices emulation etc.
 
 #### Instructions
 
-Refer to README.md file of each submodule/tool in this repo please.
+Refer to README.md file of each sub-dir in this repo please.
 
 #### Contribution
 
