@@ -1,7 +1,7 @@
 name: "dysche-cli"
 version: "0.1.0"
-about: "Cli tools for dysche partition management"
-author: "Guangxing Deng. <dengguangxing@huawei.com>, Liang Li <liliang6@me.com>"
+about: "Intro: Cli tools for dysche partition management"
+author: "Author: Guangxing Deng. <dengguangxing@huawei.com>, Liang Li <liliang6@me.com>"
 
 args:
   - verbose:

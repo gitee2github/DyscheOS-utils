@@ -12,12 +12,13 @@ enum DyscheErrorCode {
     DENOCPU,
     DENOKERNEL,
     DENOSPDP,
+    DENULL,
 }
 
 fn main() {
     let yml = clap::load_yaml!("param.yml");
     let matches = clap::App::from_yaml(yml).get_matches();
-    let mut ret : Result<i32, DyscheErrorCode> = Ok(0);
+    let mut ret : Result<i32, DyscheErrorCode> = Err(DyscheErrorCode::DENULL);
 
     if let Some(_sc) = matches.subcommand_matches("list") {
         let mut verb = false;
@@ -91,7 +92,7 @@ fn main() {
             match e {
                 _ => {},
             }
-            let _ = clap::App::from_yaml(yml).print_long_help();
+            let _ = clap::App::from_yaml(yml).print_help();
         },
     }
 
