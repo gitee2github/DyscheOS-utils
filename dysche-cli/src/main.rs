@@ -93,6 +93,7 @@ fn main() {
                 _ => {},
             }
             let _ = clap::App::from_yaml(yml).print_help();
+            println!();
         },
     }
 
@@ -185,7 +186,7 @@ fn write_line(filename: &str, line: &str) -> i32 {
         .unwrap();
 
     match file.write_all(line.as_bytes()) {
-        Err(_e) => {
+        Err(_) => {
             println!("Write error");
             ret = -1;
         }
@@ -203,5 +204,5 @@ fn read_lines(filename: &str) -> io::Result<io::Lines<io::BufReader<File>>> {
         Err(why) => panic!("couldn't open {}: {}", &filename, why),
         Ok(file) => file,
     };
-    Ok(io::BufReader::new(file).lines())
+    return Ok(io::BufReader::new(file).lines());
 }
