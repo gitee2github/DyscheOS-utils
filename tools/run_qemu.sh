@@ -15,3 +15,8 @@ qemu-system-riscv64 -nographic \
 		    -append 'root=/dev/vda1 irqpoll mem=1G rootwait rw console=ttyS0 systemd.default_timeout_start_sec=60 selinux=0 highres=off earlycon'
 
 # dysche_reserve=6G@0x100000000
+#                     -serial tcp::12121,server,nowait \
+#                     -serial tcp::12122,server,nowait
+#
+# nc localhost 12121
+# nc localhost 12122
