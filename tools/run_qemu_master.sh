@@ -3,7 +3,7 @@
 qemu-system-riscv64 -nographic \
 		    -bios fw_dynamic.elf \
 		    -machine virt \
-		    -smp 8 \
+		    -smp 4 \
 		    -m 8G \
 		    -kernel kimg-m \
 		    -drive file=oe-rv-rv64g-30G.qcow2,format=qcow2,id=hd0 \
