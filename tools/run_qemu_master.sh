@@ -13,7 +13,8 @@ qemu-system-riscv64 -nographic \
 		    -device virtio-net-device,netdev=usernet \
 		    -netdev user,id=usernet,hostfwd=tcp::12055-:22 \
 		    -append 'rdinit=/bin/sh root=/dev/vda1 irqpoll mem=1G rootwait rw console=ttyS0 systemd.default_timeout_start_sec=60 selinux=0 highres=off earlycon' \
-		    -serial tcp::12121,server,nowait \
+		    -serial stdio \
+                    -monitor tcp::12121,server,nowait \
                     -serial tcp::12122,server,nowait \
                     -serial tcp::12123,server,nowait \
 		    -serial tcp::12124,server,nowait
