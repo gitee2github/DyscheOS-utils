@@ -20,9 +20,9 @@ fn main() {
     let matches = clap::App::from_yaml(yml).get_matches();
     let mut ret : Result<i32, DyscheErrorCode> = Err(DyscheErrorCode::DENULL);
 
-    if let Some(_sc) = matches.subcommand_matches("list") {
+    if let Some(sc) = matches.subcommand_matches("list") {
         let mut verb = false;
-        if _sc.is_present("verbose") {
+        if sc.is_present("verbose") {
             println!("List partition details: ");
             verb = true;
         } else {
@@ -99,24 +99,28 @@ fn main() {
 
 }
 
-fn list_partitions(_verbose: bool) -> i32 {
+fn list_partitions(_verbose: bool) -> Option<i32> {
     let mut ret = 0;
     println!("Read partition information form : {}", DYSCHE_STS);
 
-    if let Ok(lines) = read_lines(DYSCHE_STS) {
-        for line in lines {
-            if let Ok(l) = line {
-                println!("{}", l);
+    let ls = read_lines(DYSCHE_STS);
+    match ls {
+        Ok(lines) => {
+            for line in lines {
+                if let Ok(l) = line {
+                    println!("{}", l);
+                }
             }
-        }
-    } else {
-        println!("{} is not present.", DYSCHE_STS);
-        println!("  check if the kernel module is enabled or not.");
-        println!();
-        ret = 1;
+        },
+        Err(_) => {
+            println!("{} is not present.", DYSCHE_STS);
+            println!("  check if the kernel module is enabled or not.");
+            println!();
+            ret = 1;
+        },
     }
 
-    return ret;
+    Some(ret)
 }
 
 fn create_partition(cpus: &str, kernel_img: &str, kernel_param: &str, dev_list: &str) -> Result<i32, DyscheErrorCode> {
@@ -201,7 +205,10 @@ fn write_line(filename: &str, line: &str) -> i32 {
 
 fn read_lines(filename: &str) -> io::Result<io::Lines<io::BufReader<File>>> {
     let file = match File::open(filename) {
-        Err(why) => panic!("couldn't open {}: {}", &filename, why),
+        Err(why) => {
+            println!("couldn't open {}: {}", &filename, why);
+            return Err(why);
+        },
         Ok(file) => file,
     };
     return Ok(io::BufReader::new(file).lines());

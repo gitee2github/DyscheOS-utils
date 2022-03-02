@@ -1,0 +1,8 @@
+The modified Qemu emulator
+
+The Qemu emulator is modified to add 3 additional serial ports for 'virt'
+machine.
+
+Use the modified qemu in 'run_qemu_master.sh' would supply 4 serial ports
+to master OS.
+
