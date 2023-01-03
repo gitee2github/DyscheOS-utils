@@ -1,4 +1,5 @@
 # DyscheOS-utils
+仓库状态设置为关闭的原因: https://gitee.com/openeuler/community/pulls/3792
 
 #### 介绍
 本仓库是 Dysche 解决方案用户态工具的仓库。Master 分支可能不会包含最新最全的工具
@@ -32,3 +33,4 @@ Dysche 的整体架构来源于 Linux AMP 架构，大体上分为两个部分�
 #### 致谢
 
 Thanks.
+
